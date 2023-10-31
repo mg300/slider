@@ -8,7 +8,6 @@ const PlayPauseComp = styled.button`
   height: 60px;
   background-color: rgba(232, 232, 237, 0.7);
   border-radius: 10rem;
-  margin: 12rem;
   display: flex;
   justify-content: center;
   align-items: center;
