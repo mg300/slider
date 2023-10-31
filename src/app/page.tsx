@@ -6,6 +6,7 @@ import Control from "./components/control/Control";
 import Slide from "./components/slide/Slide";
 import styled from "styled-components";
 import Slider from "./components/Slider/Slider";
+import Audio from "./Audio";
 const Main = styled.main`
   width: 100%;
   height: 100vh;
