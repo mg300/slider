@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Image from "next/image";
 const SlideWrapper = styled.div<{ $slideActiveNum: number }>`
   width: 100%;
   height: 100%;
@@ -13,22 +14,41 @@ const Slide = styled.div`
   border-radius: 36px;
   display: inline-block;
   margin-right: 80px;
+  overflow: hidden;
 `;
 
 const Title = styled.div`
   margin: 50px 0 0 40px;
   color: white;
+  position: absolute;
   font-size: 26px;
   font-weight: 700;
+  z-index: 1;
 `;
-function Slides() {
+function Slides({ slideActive }: { slideActive: number }) {
   return (
-    <SlideWrapper $slideActiveNum={0}>
+    <SlideWrapper $slideActiveNum={slideActive - 1}>
       <Slide>
-        <Title>Witam 1</Title>
+        <>
+          <Title>Witam 1</Title>
+          <Image
+            style={{ position: "absolute", width: "100%", height: "100%", objectFit: "cover", borderRadius: "36px" }}
+            src="/car.png"
+            width={600}
+            height={700}
+            alt={"abc"}
+          />
+        </>
       </Slide>
       <Slide>
         <Title>Witam 2</Title>
+        <Image
+          style={{ position: "absolute", width: "100%", height: "100%", objectFit: "cover", borderRadius: "36px" }}
+          src="/car.png"
+          width={600}
+          height={700}
+          alt={"abc"}
+        />
       </Slide>
     </SlideWrapper>
   );
