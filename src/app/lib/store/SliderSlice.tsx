@@ -11,10 +11,11 @@ export interface SliderSlice {
   nextSlide: () => void;
   fetchSlidesData: () => void;
   moveToSlide: (arg: number) => void;
+  moveToFirst: () => void;
 }
 
 export const createSliderSlice: StateCreator<SliderSlice> = (set, get) => ({
-  numOfSlides: 0,
+  numOfSlides: 1,
   isPlaying: true,
   imageURLs: [],
   audioURLs: ["song1.mp3", "song2.mp3"],
@@ -22,12 +23,21 @@ export const createSliderSlice: StateCreator<SliderSlice> = (set, get) => ({
   currentSlideNum: 0,
   isResume: false,
   nextSlide: () => {
-    if (get().currentSlideNum === get().numOfSlides) set({ isResume: true });
-    set({ currentSlideNum: get().currentSlideNum + 1 });
+    if (get().currentSlideNum === get().numOfSlides) {
+      set({ isResume: true });
+      set({ isPlaying: false });
+    } else {
+      set({ currentSlideNum: get().currentSlideNum + 1 });
+    }
   },
   moveToSlide: (slideNum) => {
     set({ currentSlideNum: slideNum });
     set({ isResume: false });
   },
   fetchSlidesData: () => {},
+  moveToFirst: () => {
+    set({ currentSlideNum: 0 });
+    set({ isPlaying: true });
+    set({ isResume: false });
+  },
 });

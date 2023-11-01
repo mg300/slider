@@ -24,7 +24,11 @@ const PlayPauseComp = styled.button`
 `;
 
 function PlayPause() {
+  const { audioURLs, currentSlideNum, nextSlide, isResume, moveToFirst } = useAppStore();
   const [btnState, setBtnState] = useState("play");
+  if (isResume && btnState === "pause") {
+    setBtnState("resume");
+  }
 
   const handleClick = function () {
     if (btnState === "play") {
@@ -35,12 +39,14 @@ function PlayPause() {
       setBtnState("play");
       pauseAudio();
     }
-    if (btnState === "resume") setBtnState("play");
+    if (btnState === "resume") {
+      setBtnState("play");
+      moveToFirst();
+    }
   };
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const { audioURLs, currentSlideNum, nextSlide } = useAppStore();
   console.log(currentSlideNum);
   useEffect(() => {
     if (audioURLs) {
@@ -84,7 +90,8 @@ function PlayPause() {
 
   return (
     <PlayPauseComp onClick={handleClick}>
-      {isPlaying ? <FaPause /> : <FaPlay />}
+      {btnState == "pause" && <FaPause />}
+      {btnState == "play" && <FaPlay />}
       {btnState === "resume" && <PiArrowCounterClockwiseBold />}
     </PlayPauseComp>
   );
