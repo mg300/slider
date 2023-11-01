@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Control from "../control/Control";
 import Slides from "../slide/Slide";
-import Audio from "../../Audio";
+import { useAppStore } from "@/app/lib/store/store";
 const SliderComp = styled.div`
   width: 800px;
   height: 500px;
@@ -14,12 +14,12 @@ const SliderComp = styled.div`
   gap: 6rem;
 `;
 function Slider() {
+  const { currentSlideNum } = useAppStore();
   return (
     <>
       <SliderComp>
-        <Slides slideActive={2}></Slides>
+        <Slides slideActive={currentSlideNum}></Slides>
       </SliderComp>
-      <Audio src="song1.mp3" />
       <Control />
     </>
   );
