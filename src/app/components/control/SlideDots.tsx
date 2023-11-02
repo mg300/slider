@@ -1,7 +1,7 @@
 "use client";
 import { useAppStore } from "@/app/lib/store/store";
-import React, { useState } from "react";
-import styled, { css } from "styled-components";
+import React from "react";
+import styled from "styled-components";
 
 const SlideDotsComp = styled.div`
   width: 170px;
@@ -38,13 +38,10 @@ const Progress = styled.div<{ $ProgressPercent: number }>`
 `;
 
 function SlideDots() {
-  const [slideNumActive, setSlideNumActive] = useState<number>(0);
-  const { progressBarPercent, currentSlideNum, moveToSlide, numOfSlides, updateAudioState } = useAppStore();
-  const [progressPercent, setProgressPercent] = useState<number>(10);
+  const { progressBarPercent, currentSlideNum, moveToSlide, numOfSlides } = useAppStore();
   const handleClick = function (num: number) {
     moveToSlide(num);
   };
-
   return (
     <SlideDotsComp>
       {Array(numOfSlides)

@@ -37,25 +37,6 @@ function PlayPause() {
   const [btnState, setBtnState] = useState("play");
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const handleClick = function () {
-    if (btnState === "play") {
-      setBtnState("pause");
-      updateAudioState("play");
-      playAudio();
-    }
-    if (btnState === "pause") {
-      setBtnState("play");
-      updateAudioState("pause");
-      pauseAudio();
-    }
-    if (btnState === "return") {
-      setBtnState("pause");
-      updateAudioState("play");
-      moveToSlide(1);
-      playAudio();
-    }
-  };
-
   useEffect(() => {
     if (audioURLs) {
       const audioElement = document.createElement("audio");
@@ -86,7 +67,7 @@ function PlayPause() {
         pauseAudio();
       }
     };
-  }, [currentSlideNum, audioState]);
+  }, [currentSlideNum, audioState, audioURLs, setProgressBar, numOfSlides, updateAudioState, nextSlide]);
 
   const playAudio = () => {
     if (audioRef.current) {
@@ -97,6 +78,24 @@ function PlayPause() {
   const pauseAudio = () => {
     if (audioRef.current) {
       audioRef.current.pause();
+    }
+  };
+  const handleClick = function () {
+    if (btnState === "play") {
+      setBtnState("pause");
+      updateAudioState("play");
+      playAudio();
+    }
+    if (btnState === "pause") {
+      setBtnState("play");
+      updateAudioState("pause");
+      pauseAudio();
+    }
+    if (btnState === "return") {
+      setBtnState("pause");
+      updateAudioState("play");
+      moveToSlide(1);
+      playAudio();
     }
   };
 

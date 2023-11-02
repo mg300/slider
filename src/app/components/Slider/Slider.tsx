@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import Control from "../control/Control";
 import Slides from "../slide/Slide";
