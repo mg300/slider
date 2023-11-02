@@ -27,7 +27,7 @@ const Title = styled.div`
 `;
 function Slides({ slideActive }: { slideActive: number }) {
   return (
-    <SlideWrapper $slideActiveNum={slideActive}>
+    <SlideWrapper $slideActiveNum={slideActive - 1}>
       <Slide>
         <>
           <Title>Witam 1</Title>

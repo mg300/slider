@@ -1,4 +1,5 @@
 "use client";
+import { useAppStore } from "@/app/lib/store/store";
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
 
@@ -33,25 +34,27 @@ const Progress = styled.div<{ $ProgressPercent: number }>`
   border-radius: 10px;
   background-color: rgba(74, 74, 74, 0.7);
   transform: translateX(${(props) => -100 + props.$ProgressPercent}%);
+  transition: transform 0.6s;
 `;
 
 function SlideDots() {
   const [slideNumActive, setSlideNumActive] = useState<number>(0);
+  const { progressBarPercent, currentSlideNum, moveToSlide, numOfSlides, updateAudioState } = useAppStore();
   const [progressPercent, setProgressPercent] = useState<number>(10);
-
   const handleClick = function (num: number) {
-    setSlideNumActive(num);
+    moveToSlide(num);
   };
 
   return (
     <SlideDotsComp>
-      {[0, 1, 2, 3].map((i) => (
-        <Dot key={i} onClick={() => handleClick(i)} className={slideNumActive === i ? "active" : ""}>
-          {slideNumActive === i && <Progress $ProgressPercent={progressPercent} />}
-        </Dot>
-      ))}
+      {Array(numOfSlides)
+        .fill(null)
+        .map((_, i) => (
+          <Dot key={i} onClick={() => handleClick(i + 1)} className={currentSlideNum - 1 === i ? "active" : ""}>
+            {currentSlideNum - 1 === i && <Progress $ProgressPercent={progressBarPercent} />}
+          </Dot>
+        ))}
     </SlideDotsComp>
   );
 }
-
 export default SlideDots;

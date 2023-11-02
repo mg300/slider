@@ -2,42 +2,40 @@ import { StateCreator } from "zustand";
 
 export interface SliderSlice {
   numOfSlides: number;
+  progressBarPercent: number;
   slideDuration: number;
-  isPlaying: boolean;
+  audioState: "play" | "pause" | "return";
   imageURLs: string[];
   audioURLs: string[];
-  isResume: boolean;
   currentSlideNum: number;
   nextSlide: () => void;
   fetchSlidesData: () => void;
   moveToSlide: (arg: number) => void;
-  moveToFirst: () => void;
+  setProgressBar: (arg: number) => void;
+  updateAudioState: (arg: "play" | "pause" | "return") => void;
 }
 
 export const createSliderSlice: StateCreator<SliderSlice> = (set, get) => ({
-  numOfSlides: 1,
-  isPlaying: true,
+  numOfSlides: 2,
+  progressBarPercent: 0,
+  audioState: "pause",
   imageURLs: [],
   audioURLs: ["song1.mp3", "song2.mp3"],
   slideDuration: 5,
-  currentSlideNum: 0,
+  currentSlideNum: 1,
   isResume: false,
   nextSlide: () => {
-    if (get().currentSlideNum === get().numOfSlides) {
-      set({ isResume: true });
-      set({ isPlaying: false });
-    } else {
-      set({ currentSlideNum: get().currentSlideNum + 1 });
-    }
+    set({ currentSlideNum: get().currentSlideNum + 1 });
   },
   moveToSlide: (slideNum) => {
     set({ currentSlideNum: slideNum });
-    set({ isResume: false });
+    set({ progressBarPercent: 0 });
   },
   fetchSlidesData: () => {},
-  moveToFirst: () => {
-    set({ currentSlideNum: 0 });
-    set({ isPlaying: true });
-    set({ isResume: false });
+  setProgressBar: (num) => {
+    set({ progressBarPercent: num });
+  },
+  updateAudioState: (audioState) => {
+    get().audioState = audioState;
   },
 });

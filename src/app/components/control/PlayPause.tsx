@@ -24,46 +24,60 @@ const PlayPauseComp = styled.button`
 `;
 
 function PlayPause() {
-  const { audioURLs, currentSlideNum, nextSlide, isResume, moveToFirst } = useAppStore();
+  const {
+    audioURLs,
+    currentSlideNum,
+    numOfSlides,
+    nextSlide,
+    setProgressBar,
+    moveToSlide,
+    updateAudioState,
+    audioState,
+  } = useAppStore();
   const [btnState, setBtnState] = useState("play");
-  if (isResume && btnState === "pause") {
-    setBtnState("resume");
-  }
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const handleClick = function () {
     if (btnState === "play") {
       setBtnState("pause");
+      updateAudioState("play");
       playAudio();
     }
     if (btnState === "pause") {
       setBtnState("play");
+      updateAudioState("pause");
       pauseAudio();
     }
-    if (btnState === "resume") {
-      setBtnState("play");
-      moveToFirst();
+    if (btnState === "return") {
+      setBtnState("pause");
+      updateAudioState("play");
+      moveToSlide(1);
+      playAudio();
     }
   };
 
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  console.log(currentSlideNum);
   useEffect(() => {
     if (audioURLs) {
       const audioElement = document.createElement("audio");
-      audioElement.src = audioURLs[currentSlideNum];
-      console.log(audioElement.src);
+      audioElement.src = audioURLs[currentSlideNum - 1];
       audioRef.current = audioElement;
-      // audioElement.addEventListener("loadedmetadata", () => {
-      //   console.log(audioElement.duration);
-      // });
+      audioElement.addEventListener("timeupdate", () => {
+        setProgressBar((audioElement.currentTime / audioElement.duration) * 100);
+      });
       const handleAudioEnded = () => {
         audioElement.removeEventListener("ended", handleAudioEnded);
-
-        nextSlide();
+        if (numOfSlides === currentSlideNum) {
+          setBtnState("return");
+          updateAudioState("return");
+        } else {
+          nextSlide();
+        }
       };
-      if (currentSlideNum != 0) playAudio();
 
+      if (audioState === "play") {
+        playAudio();
+        setBtnState("pause");
+      }
       audioElement.addEventListener("ended", handleAudioEnded);
     }
 
@@ -72,19 +86,17 @@ function PlayPause() {
         pauseAudio();
       }
     };
-  }, [currentSlideNum]);
+  }, [currentSlideNum, audioState]);
 
   const playAudio = () => {
     if (audioRef.current) {
       audioRef.current.play();
-      setIsPlaying(true);
     }
   };
 
   const pauseAudio = () => {
     if (audioRef.current) {
       audioRef.current.pause();
-      setIsPlaying(false);
     }
   };
 
@@ -92,7 +104,7 @@ function PlayPause() {
     <PlayPauseComp onClick={handleClick}>
       {btnState == "pause" && <FaPause />}
       {btnState == "play" && <FaPlay />}
-      {btnState === "resume" && <PiArrowCounterClockwiseBold />}
+      {btnState === "return" && <PiArrowCounterClockwiseBold />}
     </PlayPauseComp>
   );
 }
