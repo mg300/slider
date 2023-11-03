@@ -1,5 +1,4 @@
 import fs from "fs";
-import { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
 import path from "path";
 
@@ -10,7 +9,7 @@ interface Idata {
   audioURL: string;
 }
 
-export const GET = async (request: NextApiRequest, { params }: { params: { name: string } }) => {
+export const GET = async () => {
   try {
     const FilePath = path.join(process.cwd(), "public");
 
