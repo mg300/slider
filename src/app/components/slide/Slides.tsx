@@ -1,10 +1,18 @@
 import React from "react";
 import styled from "styled-components";
 import Image from "next/image";
-const SlideWrapper = styled.div<{ $slideActiveNum: number }>`
+interface Idata {
+  id: number;
+  text: string;
+  imageURL: string;
+  audioURL: string;
+}
+const SlideWrapper = styled.div<{ $currentSlideNum: number }>`
   width: 100%;
   height: 100%;
-  transform: translateX(calc(${(props) => -100 * props.$slideActiveNum}% - ${(props) => 80 * props.$slideActiveNum}px));
+  transform: translateX(
+    calc(${(props) => -100 * props.$currentSlideNum}% - ${(props) => 80 * props.$currentSlideNum}px)
+  );
   transition: transform 1s;
 `;
 const Slide = styled.div`
@@ -25,31 +33,21 @@ const Title = styled.div`
   font-weight: 700;
   z-index: 1;
 `;
-function Slides({ slideActive }: { slideActive: number }) {
+function Slides({ currentSlide, data }: { currentSlide: number; data: Idata[] }) {
   return (
-    <SlideWrapper $slideActiveNum={slideActive - 1}>
-      <Slide>
-        <>
-          <Title>Witam 1</Title>
+    <SlideWrapper $currentSlideNum={currentSlide - 1}>
+      {data.map((obj: Idata) => (
+        <Slide key={obj.id}>
+          <Title>{obj.text}</Title>
           <Image
             style={{ position: "absolute", width: "100%", height: "100%", objectFit: "cover", borderRadius: "36px" }}
-            src="/car.png"
+            src={obj.imageURL}
             width={600}
             height={700}
             alt={"abc"}
           />
-        </>
-      </Slide>
-      <Slide>
-        <Title>Witam 2</Title>
-        <Image
-          style={{ position: "absolute", width: "100%", height: "100%", objectFit: "cover", borderRadius: "36px" }}
-          src="/car.png"
-          width={600}
-          height={700}
-          alt={"abc"}
-        />
-      </Slide>
+        </Slide>
+      ))}
     </SlideWrapper>
   );
 }
