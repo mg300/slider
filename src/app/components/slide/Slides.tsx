@@ -29,9 +29,14 @@ const Title = styled.div`
   margin: 50px 0 0 40px;
   color: white;
   position: absolute;
-  font-size: 26px;
+  font-size: 30px;
   font-weight: 700;
   z-index: 1;
+  background-color: #0000008c;
+  border-radius: 20px;
+  -webkit-box-shadow: 0px 0px 16px 10px #0000008c;
+  -moz-box-shadow: 0px 0px 16px 10px #0000008c;
+  box-shadow: 0px 0px 16px 10px #0000008c;
 `;
 function Slides({ currentSlide, data }: { currentSlide: number; data: Idata[] }) {
   return (
