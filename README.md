@@ -1,12 +1,16 @@
 # Slider
-##GET STARTED
-DEVELOPMENT:
+
+## GET STARTED
+
+
+LIVE: https://slider-gamma.vercel.app
+### DEVELOPMENT:
 ```
 git clone https://github.com/mg300/slider.git
 npm install
 npm run dev
 ```
-PRODUCTION:
+### PRODUCTION:
 ```
 git clone https://github.com/mg300/slider.git
 npm install
