@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Control from "../control/Control";
 import Slides from "../slide/Slides";
 import { useAppStore } from "@/app/lib/store/store";
+require("dotenv").config();
 const SliderComp = styled.div`
   width: 1200px;
   height: 800px;
@@ -28,7 +29,10 @@ const SliderComp = styled.div`
 function Slider() {
   const { currentSlideNum, fetchSlidesData, slidesData } = useAppStore();
   useEffect(() => {
-    fetchSlidesData("http://localhost:3000/api/slider");
+    console.log(process.env);
+    console.log(process.env.HOST);
+    console.log(process.env.NEXT_PUBLIC_HOST);
+    fetchSlidesData(`${process.env.NEXT_PUBLIC_HOST}/api/slider`);
   }, [fetchSlidesData]);
 
   return (

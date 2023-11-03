@@ -25,9 +25,9 @@ export const GET = async (request: NextApiRequest, { params }: { params: { name:
       const fileExtension = path.extname(file).toLowerCase();
 
       if (fileExtension === ".jpeg") {
-        imageURLs.push(`http://localhost:3000/api/slider/image/${file}`);
+        imageURLs.push(`${process.env.NEXT_PUBLIC_HOST}/api/slider/image/${file}`);
       } else if (fileExtension === ".mp3") {
-        audioURLs.push(`http://localhost:3000/api/slider/audio/${file}`);
+        audioURLs.push(`${process.env.NEXT_PUBLIC_HOST}/api/slider/audio/${file}`);
       }
     }
 
