@@ -25,7 +25,7 @@ const PlayPauseComp = styled.button`
 
 function PlayPause() {
   const {
-    audioURLs,
+    slidesData,
     currentSlideNum,
     numOfSlides,
     nextSlide,
@@ -33,17 +33,26 @@ function PlayPause() {
     moveToSlide,
     updateAudioState,
     audioState,
+    slideDuration,
   } = useAppStore();
   const [btnState, setBtnState] = useState("play");
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    if (audioURLs) {
+    if (slidesData[currentSlideNum - 1]?.audioURL) {
       const audioElement = document.createElement("audio");
-      audioElement.src = audioURLs[currentSlideNum - 1];
+      audioElement.src = slidesData[currentSlideNum - 1].audioURL;
       audioRef.current = audioElement;
       audioElement.addEventListener("timeupdate", () => {
-        setProgressBar((audioElement.currentTime / audioElement.duration) * 100);
+        if (audioElement.currentTime > slideDuration) {
+          if (numOfSlides === currentSlideNum) {
+            setBtnState("return");
+            updateAudioState("return");
+          } else {
+            nextSlide();
+          }
+        }
+        setProgressBar((audioElement.currentTime / slideDuration) * 100);
       });
       const handleAudioEnded = () => {
         audioElement.removeEventListener("ended", handleAudioEnded);
@@ -67,7 +76,16 @@ function PlayPause() {
         pauseAudio();
       }
     };
-  }, [currentSlideNum, audioState, audioURLs, setProgressBar, numOfSlides, updateAudioState, nextSlide]);
+  }, [
+    currentSlideNum,
+    audioState,
+    slidesData,
+    setProgressBar,
+    numOfSlides,
+    updateAudioState,
+    nextSlide,
+    slideDuration,
+  ]);
 
   const playAudio = () => {
     if (audioRef.current) {
