@@ -29,9 +29,6 @@ const SliderComp = styled.div`
 function Slider() {
   const { currentSlideNum, fetchSlidesData, slidesData } = useAppStore();
   useEffect(() => {
-    console.log(process.env);
-    console.log(process.env.HOST);
-    console.log(process.env.NEXT_PUBLIC_HOST);
     fetchSlidesData(`${process.env.NEXT_PUBLIC_HOST}/api/slider`);
   }, [fetchSlidesData]);
 
