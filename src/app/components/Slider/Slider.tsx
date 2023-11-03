@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Control from "../control/Control";
-import Slides from "../slide/Slide";
+import Slides from "../slide/Slides";
 import { useAppStore } from "@/app/lib/store/store";
 const SliderComp = styled.div`
   width: 800px;
@@ -14,11 +14,15 @@ const SliderComp = styled.div`
   gap: 6rem;
 `;
 function Slider() {
-  const { currentSlideNum } = useAppStore();
+  const { currentSlideNum, fetchSlidesData, slidesData } = useAppStore();
+  useEffect(() => {
+    fetchSlidesData("http://localhost:3000/api/slider");
+  }, [fetchSlidesData]);
+
   return (
     <>
       <SliderComp>
-        <Slides slideActive={currentSlideNum}></Slides>
+        <Slides currentSlide={currentSlideNum} data={slidesData}></Slides>
       </SliderComp>
       <Control />
     </>
