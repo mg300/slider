@@ -1,27 +1,30 @@
 import { StateCreator } from "zustand";
-
+interface Idata {
+  id: number;
+  text: string;
+  imageURL: string;
+  audioURL: string;
+}
 export interface SliderSlice {
   numOfSlides: number;
   progressBarPercent: number;
+  slidesData: Idata[];
   slideDuration: number;
   audioState: "play" | "pause" | "return";
-  imageURLs: string[];
-  audioURLs: string[];
   currentSlideNum: number;
   nextSlide: () => void;
-  fetchSlidesData: () => void;
+  fetchSlidesData: (arg: string) => void;
   moveToSlide: (arg: number) => void;
   setProgressBar: (arg: number) => void;
   updateAudioState: (arg: "play" | "pause" | "return") => void;
 }
 
 export const createSliderSlice: StateCreator<SliderSlice> = (set, get) => ({
-  numOfSlides: 2,
+  numOfSlides: 0,
   progressBarPercent: 0,
+  slideDuration: 7,
   audioState: "pause",
-  imageURLs: [],
-  audioURLs: ["song1.mp3", "song2.mp3"],
-  slideDuration: 5,
+  slidesData: [],
   currentSlideNum: 1,
   isResume: false,
   nextSlide: () => {
@@ -31,7 +34,16 @@ export const createSliderSlice: StateCreator<SliderSlice> = (set, get) => ({
     set({ currentSlideNum: slideNum });
     set({ progressBarPercent: 0 });
   },
-  fetchSlidesData: () => {},
+  fetchSlidesData: async (url) => {
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      set({ slidesData: data });
+      set({ numOfSlides: data.length });
+    } catch (err) {
+      console.log("Something went wrong");
+    }
+  },
   setProgressBar: (num) => {
     set({ progressBarPercent: num });
   },
