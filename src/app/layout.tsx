@@ -6,7 +6,7 @@ import StyledComponentsRegistry from "./registry";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Slider - interview",
+  title: "Slider",
   description: "Ready to use component",
 };
 
